@@ -1,26 +1,56 @@
 "use client"
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Plus } from 'lucide-react';
+// import { size } from 'better-auth';
+import { FileUser, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 // import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-
+const sizes = [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "XXL"
+];
 const AddProductFormModal = () => {
     const modalRef = useRef()
     const fileInputRef = useRef()
     const router = useRouter()
-    const [preview, setPreview] = useState(null)
+    const [previews, setPreviews] = useState(null)
 
-    // const {data:productName, isLoading} = 
+    const { data: categoryNames, isLoading } = useQuery({
+        queryKey: ['category-name'],
+        queryFn: async () => {
+            const { data: result } = await axios.get("http://localhost:8000/categoryNames")
+            return result
+
+        }
+    })
+    console.log(categoryNames)
+
+    // form extra size button
+    const [sizeFieldCount, setSizeFieldCount] = useState(1)
+    // form discount type 
+    const [discountType, setDiscountType] = useState("taka")
+
+    const handleDiscountType = (e) => {
+        console.log(e.target.value)
+        setDiscountType(e.target.value)
+    }
+
 
 
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0]
-        if (file) {
-            setPreview(URL.createObjectURL(file))
+        const files = Array.from(e.target.files)
+        // console.log(typeof files, files )
+        if (files) {
+            const fileUrls = files.map(file => URL.createObjectURL(file))
+            setPreviews(fileUrls)
         }
     }
 
@@ -29,24 +59,58 @@ const AddProductFormModal = () => {
     const handleAddProduct = async (e) => {
         e.preventDefault()
         modalRef.current.close()
-        const toastId = toast.loading('New Product Adding...')
-        const formData = Object.fromEntries(new FormData(e.target))
-        // console.log(formData.logo.name )
+        const toastIdImage = toast.loading('Image Uploading...')
+        // const toastIdImage = toast.loading('New Product Adding...')
+        const formEntries = new FormData(e.target)
+        const images = formEntries.getAll("images") // images in an array
+        console.log(images)
+
+        const formData = Object.fromEntries(formEntries)
+        // console.log(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME)
+        const sizes = []
+        let totalQuantity = 0
+        for (let i = 0; i < sizeFieldCount; i++) {
+
+            sizes.push({
+                size: formData[`size${i}`],
+                quantity: formData[`quantity${i}`]
+            })
+            totalQuantity = Number(totalQuantity) + Number(formData[`quantity${i}`])
+            delete formData[`size${i}`]
+            delete formData[`quantity${i}`]
+        }
+        const categoryNameField = categoryNames.find(item => item._id === formData.categoryId)
+        formData.categoryName = categoryNameField.name
+        formData.sizes = sizes
+        formData.totalQuantity = totalQuantity
+        console.log(formData)
 
 
+
+        // const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`, imageData)
+        // console.log(data.data.url)
+        // const photoUrl = data.data.url
+        // formData.logo = photoUrl
+        let toastIdProduct
         try {
-            if (formData.logo.name) {
-                const imageData = new FormData()
-                imageData.append('image', formData.logo)
-                const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`, imageData)
-                console.log(data.data.url)
-                const photoUrl = data.data.url
-                formData.logo = photoUrl
-                console.log(formData)
-            }
-            else {
-                formData.logo = ""
-            }
+            // upload Image >>>>>>>>>>>>>>>> 
+            const imageUrls = await Promise.all(
+                images.map(async (file) => {
+                    const imageData = new FormData()
+                    imageData.append('file', file)
+                    imageData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET)
+                    const { data } = await axios.post(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, imageData)
+                    return data.secure_url
+                })
+            )
+            toast.dismiss(toastIdImage)
+            toastIdProduct = toast.loading('New Product Adding...')
+            console.log(imageUrls)
+            formData.images = imageUrls
+            // send data to database >>>>>>>>>>>>>>
+
+
+
 
 
 
@@ -56,20 +120,22 @@ const AddProductFormModal = () => {
                 throw new Error('Failed to add product')
             }
             router.refresh()
-            toast.dismiss(toastId)
+            toast.dismiss(toastIdProduct)
             toast.success('Product Added Successfully')
+            setPreviews(null)
+            setSizeFieldCount(1)
             e.target.reset()
         } catch (error) {
-            toast.dismiss(toastId)
+            toast.dismiss(toastIdImage)
+            toast.dismiss(toastIdProduct)
             toast.error(error.message)
         }
 
     }
 
     const handleCancel = () => {
-
-
-        setPreview(null)
+        setSizeFieldCount(1)
+        setPreviews(null)
         modalRef.current.close()
     }
 
@@ -77,7 +143,7 @@ const AddProductFormModal = () => {
         <div>
             <button onClick={() => modalRef.current.showModal()} className='btn btn-primary'><Plus className='mt-px' size={16} /> Add Product</button>
             <dialog ref={modalRef} className="modal">
-                <div className="modal-box">
+                <div className="modal-box w-150 max-w-150">
                     <form method="dialog">
                         {/* if there is a button in form, it will close the modal */}
                         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
@@ -89,20 +155,22 @@ const AddProductFormModal = () => {
                             <label className="block text-sm font-medium mb-2">Product Image</label>
                             <div
                                 onClick={() => fileInputRef.current.click()}
-                                className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition"
+                                className="border-2 flex justify-center border-dashed border-gray-300 rounded-lg py-8 text-center cursor-pointer hover:border-primary transition overflow-x-auto"
                             >
-                                {preview ? (
-                                    <div className="flex flex-col items-center">
-                                        <Image
-                                            src={preview}
-                                            alt='Preview'
-                                            height={128}
-                                            width={128}
-                                            className='object-cover h-32 w-32 rounded'
-
-                                        />
+                                {previews ? (
+                                    <div className="flex items-center gap-2  px-8 w-max">
+                                        {previews.map((preview, index) => (
+                                            <Image
+                                                key={index}
+                                                src={preview}
+                                                alt={`Preview ${index}`}
+                                                width={100}
+                                                height={100}
+                                                className={`h-25 w-25 rounded object-cover shrink-0`}
+                                            />
+                                        ))}
                                         {/* <img src={preview} alt="Preview" className="h-32 w-32 object-cover rounded mb-2" /> */}
-                                        <p className="text-sm text-gray-500">Click to change image</p>
+                                        {/* <p className="text-sm text-gray-500">Click to change image</p> */}
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center">
@@ -117,9 +185,24 @@ const AddProductFormModal = () => {
                                 accept="image/*"
                                 onChange={handleImageChange}
                                 className="hidden"
-                                name='logo'
+                                name='images'
+                                required
+                                multiple
                             />
                         </div>
+
+                        {/* Category Name */}
+                        <div className="form-group">
+                            <label htmlFor="productName" className="block text-sm font-medium mb-2" >Category Name</label>
+                            <select required className='select w-full' name='categoryId' defaultValue={"Select Category"}>
+                                <option disabled>Select Category</option>
+                                {categoryNames?.map((data, index) =>
+                                    <option key={index} value={data._id}>{data.name}</option>
+                                )}
+                            </select>
+                        </div>
+
+
 
                         {/* Product Name */}
                         <div className="form-group">
@@ -133,10 +216,172 @@ const AddProductFormModal = () => {
                                 required
                             />
                         </div>
+                        {/* price & discount */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="form-group">
+                                <label className="block text-sm font-medium mb-2">
+                                    Price
+                                </label>
+                                <input
+                                    type="number"
+                                    name="price"
+                                    min={0}
+                                    placeholder="0"
+                                    className="input input-bordered w-full"
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <div className="flex justify-between gap-1 text-sm font-medium mb-2">
+                                    Discount {discountType === "taka" ? 'Price' : "%"}
+                                    <div className='space-x-2 '>
+                                        <label className='inline-flex items-center gap-1'>
+                                            <input onChange={handleDiscountType} type="radio" name="discountType" value={"taka"} className="radio radio-info radio-xs" defaultChecked /> TK
+                                        </label>
+                                        <label className='inline-flex items-center gap-1'>
+                                            <input onChange={handleDiscountType} type="radio" name="discountType" value={"percentage"} className="radio radio-info radio-xs" /> %
+                                        </label>
+                                    </div>
+                                </div>
+                                <input
+                                    type="number"
+                                    name="discount"
+                                    min={0}
+                                    placeholder="Optional"
+                                    className="input input-bordered w-full"
+                                />
+                            </div>
+
+                        </div>
+
+                        {/* Size */}
+                        {[...Array(sizeFieldCount)].map((_, index) => (
+                            <div key={index} className="grid grid-cols-2 gap-4">
+                                {/* Size */}
+                                <div className="form-group flex-1">
+                                    <label className="block text-sm font-medium mb-2">Sizes</label>
+                                    <select required className="select w-full" defaultValue="Select Size" name={`size${index}`}>
+                                        <option disabled>Select Size</option>
+                                        {sizes.map((size, i) => (
+                                            <option key={i}>{size}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Quantity */}
+                                <div className='flex gap-4 items-end'>
+                                    <div className="form-group flex-1">
+                                        <label className="block text-sm font-medium mb-2">
+                                            Quantity
+                                        </label>
+                                        <input
+                                            type="number"
+                                            name={`quantity${index}`}
+                                            className="input input-bordered w-full"
+                                            min={0}
+                                            defaultValue={1}
+                                            required
+                                        />
+                                    </div>
+
+                                    {/* Add / Remove Button */}
+                                    {index === sizeFieldCount - 1 ? (
+                                        <button
+                                            type="button"
+                                            className={`btn h-10 w-10 text-xl border ${sizeFieldCount >= sizes.length ? "active:border-red-500" : ""}`}
+                                            onClick={() => setSizeFieldCount(prev => prev >= sizes.length ? prev : prev + 1)}
+                                        >
+                                            +
+                                        </button>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            className="btn h-10 w-10 text-xl"
+                                            onClick={() => setSizeFieldCount(prev => prev - 1)}
+                                        >
+                                            -
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+
+                        {/* Material & color  */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="form-group">
+                                <label className="block text-sm font-medium mb-2">
+                                    Material
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="material"
+                                    placeholder="Cotton"
+                                    className="input input-bordered w-full"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="block text-sm font-medium mb-2">
+                                    Colors
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="colors"
+                                    placeholder="Black, White, Red"
+                                    className="input input-bordered w-full"
+                                />
+
+                                <p className="text-xs opacity-70 mt-1">
+                                    Separate colors with commas.
+                                </p>
+                            </div>
+
+                        </div>
+                        {/* Product Status */}
+                        <div className="grid grid-cols-2 gap-4">
+
+                            <div className="form-group">
+                                <label className="block text-sm font-medium mb-2">
+                                    Product Status
+                                </label>
+
+                                <select
+                                    className="select w-full"
+                                    name="status"
+                                    defaultValue="Active"
+                                >
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                    <option>Draft</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="block text-sm font-medium mb-2">
+                                    Gender
+                                </label>
+
+                                <select
+                                    className="select w-full"
+                                    defaultValue="Unisex"
+                                    name="gender"
+                                >
+                                    <option>Men</option>
+                                    <option>Women</option>
+                                    <option>Unisex</option>
+                                    <option>Kids</option>
+                                </select>
+                            </div>
+
+
+                        </div>
 
                         {/* Product Description */}
                         <div className="form-group">
-                            <label htmlFor="productDescription" className="block text-sm font-medium mb-2">Product Description</label>
+                            <label htmlFor="productDescription" className="block text-sm font-medium mb-2">Product Description <span className='text-xs text-yellow-400'>Separate points with double dots (..)</span></label>
                             <textarea
                                 id="productDescription"
                                 name="description"

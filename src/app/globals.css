@@ -3,3 +3,8 @@
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark;
 }
+
+.active {
+  background: rgba(6, 181, 212, 0.5);
+  border-left: 4px solid #06B6D4;
+}

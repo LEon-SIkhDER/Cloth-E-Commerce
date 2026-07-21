@@ -7,11 +7,13 @@ import { useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
-const AddCategoryFormModal = () => {
+const AddCategoryFormModal = ({ categoryNames }) => {
+    console.log(categoryNames)
     const modalRef = useRef()
     const fileInputRef = useRef()
     const router = useRouter()
     const [preview, setPreview] = useState(null)
+    const [nameError, setNameError] = useState()
 
 
 
@@ -20,6 +22,16 @@ const AddCategoryFormModal = () => {
         if (file) {
             setPreview(URL.createObjectURL(file))
         }
+    }
+
+    const handleCategoryName = (e) => {
+        setNameError()
+        console.log(e.target.value)
+        if (categoryNames.includes(e.target.value.toLowerCase().trim())) {
+            setNameError(`Category "${e.target.value}" is already exist.`)
+        }
+
+
     }
 
 
@@ -65,8 +77,6 @@ const AddCategoryFormModal = () => {
     }
 
     const handleCancel = () => {
-
-
         setPreview(null)
         modalRef.current.close()
     }
@@ -116,6 +126,7 @@ const AddCategoryFormModal = () => {
                                 onChange={handleImageChange}
                                 className="hidden"
                                 name='logo'
+                                
                             />
                         </div>
 
@@ -123,6 +134,7 @@ const AddCategoryFormModal = () => {
                         <div className="form-group">
                             <label htmlFor="categoryName" className="block text-sm font-medium mb-2">Category Name</label>
                             <input
+                                onChange={handleCategoryName}
                                 type="text"
                                 id="categoryName"
                                 name="name"
@@ -130,6 +142,9 @@ const AddCategoryFormModal = () => {
                                 className="input input-bordered w-full"
                                 required
                             />
+                            {
+                                nameError && <p className='text-red-500 text-xs mt-2'>{nameError}</p>
+                            }
                         </div>
 
                         {/* Category Description */}

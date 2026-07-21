@@ -10,7 +10,9 @@ import Link from 'next/link';
 const Categories = async () => {
     const categoriesRes = await fetch("http://localhost:8000/categories")
     const categories = await categoriesRes.json()
-    console.log(categories)
+    const categoryNames = categories?.map(category => category.name.toLowerCase().trim())
+
+
     // return
     return (
         <div>
@@ -20,7 +22,7 @@ const Categories = async () => {
                     <h1 className='font-bold text-4xl'>Categories</h1>
                     <p>Manage all categories here</p>
                 </div>
-                <AddCategoryFormModal></AddCategoryFormModal>
+                <AddCategoryFormModal categoryNames={categoryNames}></AddCategoryFormModal>
             </div>
             <div className="">
                 <table className="table table-zebra w-full">

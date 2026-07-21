@@ -3,6 +3,7 @@ import Link from 'next/link';
 import LogOut from './LogOut';
 
 import { Handbag, House, LayoutGrid } from 'lucide-react';
+import NavLink from '@/Components/NavLink';
 
 const SideBar = ({ pages }) => {
 
@@ -27,9 +28,9 @@ const SideBar = ({ pages }) => {
                 <ul className="menu bg-base-200 min-h-full w-80 p-4">
                     {/* Sidebar content here */}
                     <Logo></Logo>
-                    <li className='text-xl'><Link href={"/"}><House />Home</Link></li>
-                    <li className='text-xl'><Link href={"/categories"}><LayoutGrid />Categories</Link></li>
-                    <li className='text-xl'><Link href={"/products"}><Handbag />Products</Link></li>
+                    <li className='text-xl'><NavLink to={"/"}><House />Home</NavLink></li>
+                    <li className='text-xl'><NavLink to={"/categories"}><LayoutGrid />Categories</NavLink></li>
+                    <li className='text-xl'><NavLink to={"/products"}><Handbag />Products</NavLink></li>
                     <LogOut></LogOut>
                 </ul>
             </div>
