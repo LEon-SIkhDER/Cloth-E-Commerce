@@ -1,150 +1,141 @@
-import { Eye, MoreVertical, Pencil, Plus, Trash2 } from "lucide-react";
+import { Ban, Eye, MoreVertical, Pencil, Plus, Trash2 } from "lucide-react";
 import AddProductFormModal from "./AddProductFormModal";
 import Image from "next/image";
+import getTotalProductCount from "@/lib/getTotalProductCount";
+import ProductStatus from "./ProductStatus";
 
 const page = async () => {
-    const productsRes = await fetch("http://localhost:8000/products")
-    const products = await productsRes.json()
-    console.log(products)
+    const productsRes = await fetch("http://localhost:8000/products");
+    const products = await productsRes.json();
+
+
     const getFinalPrice = (product) => {
         const price = Number(product.price);
         const discount = Number(product.discount);
-
         if (product.discountType === "taka") {
             return price - discount;
         }
-
-        return price - (price * discount) / 100;
+        if (product.discountType === "percentage") {
+            return price - (price * discount) / 100;
+        }
+        return price;
     };
+
+
     return (
         <div>
-            <div className='flex justify-between'>
-
+            <div className="flex justify-between items-center">
                 <div>
-                    <h1 className='font-bold text-4xl'>Products</h1>
+                    <h1 className="font-bold text-4xl">Products</h1>
                     <p>Manage all products here</p>
                 </div>
-                <AddProductFormModal></AddProductFormModal>
+
+                <AddProductFormModal />
             </div>
-            <div className="hidden md:block overflow-x-auto rounded-xl border border-base-300 bg-base-100">
-                <table className="table">
+
+
+            <div className="rounded-lg ">
+                <table className="table table-zebra mt-10  bg-white/5">
                     <thead className="bg-base-200">
                         <tr>
+                            <th>#</th>
                             <th>Image</th>
                             <th>Product</th>
                             <th>Category</th>
                             <th>Price</th>
                             <th>Stock</th>
                             <th>Status</th>
-                            <th>Updated</th>
-                            <th className="text-end">Actions</th>
+                            <th className="text-center">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {products?.map((product) => (
-                            <tr key={product._id} className="hover">
-                                {/* Image */}
+                        {products.map((product, index) => (
+                            <tr key={product._id}>
+                                <td>{index + 1}</td>
+
                                 <td>
                                     <Image
                                         src={product.images[0]}
                                         alt={product.name}
-                                        height={64}
-                                        width={64}
-                                        className="w-16 h-16 rounded-lg object-cover"
-
+                                        width={60}
+                                        height={60}
+                                        className="rounded-lg object-cover h-15 w-15"
                                     />
                                 </td>
 
-                                {/* Product */}
-                                <td className="max-w-xs">
-                                    <h3 className="font-semibold line-clamp-2">
-                                        {product.name}
-                                    </h3>
-
-                                    <p className="text-xs opacity-60 mt-1">
-                                        {product.material}
-                                    </p>
-                                </td>
-
-                                {/* Category */}
                                 <td>
-                                    <div className="badge badge-outline">
-                                        {product.categoryName}
+                                    <div>
+                                        <h2 className="font-semibold line-clamp-2">
+                                            {product.name}
+                                        </h2>
+
+                                        <p className="text-xs text-gray-500">
+                                            {product.gender}
+                                        </p>
                                     </div>
                                 </td>
 
-                                {/* Price */}
-                                <td>
-                                    <p className="font-bold text-primary">
-                                        ৳{getFinalPrice(product)}
-                                    </p>
+                                <td>{product.categoryName}</td>
 
-                                    <p className="text-xs line-through opacity-60">
-                                        ৳{product.price}
-                                    </p>
+                                <td>
+                                    <div>
+                                        <span className="font-semibold text-success">
+                                            ৳{getFinalPrice(product)}
+                                        </span>
+
+                                        {Number(product.discount) > 0 && (
+                                            <div className="text-xs line-through text-gray-500">
+                                                ৳{product.price}
+                                            </div>
+                                        )}
+                                    </div>
                                 </td>
 
-                                {/* Stock */}
                                 <td>
-                                    <span
-                                        className={`font-semibold ${product.totalQuantity === 0
-                                            ? "text-error"
-                                            : "text-success"
-                                            }`}
-                                    >
-                                        {product.totalQuantity}
-                                    </span>
-                                </td>
-
-                                {/* Status */}
-                                <td>
-                                    <div
-                                        className={`badge ${product.status === "Active"
+                                    {/* <span
+                                        className={`badge ${getTotalProductCount(product.variants) > 0
                                             ? "badge-success"
                                             : "badge-error"
                                             }`}
                                     >
-                                        {product.status}
-                                    </div>
+                                        {product.totalQuantity}
+                                    </span> */}
+                                    {getTotalProductCount(product.variants)}
                                 </td>
 
-                                {/* Updated */}
                                 <td>
-                                    {new Date(product.updatedAt).toLocaleDateString()}
+                                    <span
+                                        className={`badge capitalize ${product.status === "active"
+                                            ? "badge-success"
+                                            : product.status === "draft"
+                                                ? "badge-warning"
+                                                : "badge-error"
+                                            }`}
+                                    >
+                                        {product.status}
+                                    </span>
                                 </td>
 
-                                {/* Actions */}
-                                <td className="text-end">
+
+
+                                <td className="text-center">
                                     <div className="dropdown dropdown-end">
-                                        <label tabIndex={0} className="btn btn-ghost btn-sm">
+                                        <button
+                                            tabIndex={0}
+                                            className="cursor-pointer "
+                                        >
                                             <MoreVertical size={18} />
-                                        </label>
+                                        </button>
 
                                         <ul
                                             tabIndex={0}
-                                            className="dropdown-content menu bg-base-200 rounded-box w-44 shadow-lg z-10"
+                                            className="dropdown-content  menu p-2 shadow bg-base-100 rounded-box w-48 border border-white/10"
                                         >
-                                            <li>
-                                                <button>
-                                                    <Eye size={16} />
-                                                    View
-                                                </button>
-                                            </li>
-
-                                            <li>
-                                                <button>
-                                                    <Pencil size={16} />
-                                                    Edit
-                                                </button>
-                                            </li>
-
-                                            <li>
-                                                <button className="text-error">
-                                                    <Trash2 size={16} />
-                                                    Delete
-                                                </button>
-                                            </li>
+                                            <li><button><Eye size={16} />View</button></li>
+                                            <li><button><Pencil size={16} />Edit</button></li>
+                                            <li><ProductStatus status={product.status}></ProductStatus></li>
+                                            <li><button className="text-error"><Trash2 size={16} />Delete</button></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -154,110 +145,40 @@ const page = async () => {
                 </table>
             </div>
 
-            {/* ================= Mobile ================= */}
-
-            <div className="grid gap-4 md:hidden">
-                {products.map((product) => (
-                    <div
-                        key={product._id}
-                        className="card bg-base-100 border border-base-300 shadow-md"
-                    >
-                        <div className="card-body p-4">
-                            <div className="flex gap-4">
-                                <Image
-                                    src={product.images[0]}
-                                    alt={product.name}
-                                    height={96}
-                                    width={96}
-                                    className="w-24 h-24 rounded-lg object-cover"
 
 
-                                />
 
-                                <div className="flex-1">
-                                    <h2 className="font-bold line-clamp-2">
-                                        {product.name}
-                                    </h2>
 
-                                    <p className="text-sm opacity-70">
-                                        {product.categoryName}
-                                    </p>
 
-                                    <div className="mt-2">
-                                        <span className="text-primary font-bold text-lg">
-                                            ৳{getFinalPrice(product)}
-                                        </span>
 
-                                        <span className="ml-2 text-xs line-through opacity-60">
-                                            ৳{product.price}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div className="divider my-3"></div>
 
-                            <div className="grid grid-cols-2 gap-2 text-sm">
-                                <div>
-                                    <span className="opacity-60">Stock</span>
-                                    <p className="font-semibold">
-                                        {product.totalQuantity}
-                                    </p>
-                                </div>
 
-                                <div>
-                                    <span className="opacity-60">Gender</span>
-                                    <p className="font-semibold">
-                                        {product.gender}
-                                    </p>
-                                </div>
 
-                                <div>
-                                    <span className="opacity-60">Status</span>
 
-                                    <div
-                                        className={`badge mt-1 ${product.status === "Active"
-                                            ? "badge-success"
-                                            : "badge-error"
-                                            }`}
-                                    >
-                                        {product.status}
-                                    </div>
-                                </div>
 
-                                <div>
-                                    <span className="opacity-60">Sizes</span>
 
-                                    <div className="flex flex-wrap gap-1 mt-1">
-                                        {product.sizes.map((size, i) => (
-                                            <span
-                                                key={i}
-                                                className="badge badge-outline badge-sm"
-                                            >
-                                                {size.size}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div className="card-actions justify-end mt-4">
-                                <button className="btn btn-ghost btn-sm">
-                                    <Eye size={18} />
-                                </button>
 
-                                <button className="btn btn-ghost btn-sm">
-                                    <Pencil size={18} />
-                                </button>
 
-                                <button className="btn btn-ghost btn-sm text-error">
-                                    <Trash2 size={18} />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+
+
+
+
+            {products.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20">
+                    <h2 className="text-2xl font-semibold text-gray-500">
+                        No products added yet
+                    </h2>
+                    <p className="mt-2 text-gray-400">
+                        Click the <span className="font-medium">Add Product</span> button to create your first product.
+                    </p>
+                </div>
+            ) : (
+                <div>
+                    {/* Your products table/grid goes here */}
+                </div>
+            )}
         </div>
     );
 };

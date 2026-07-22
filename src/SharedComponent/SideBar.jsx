@@ -28,9 +28,9 @@ const SideBar = ({ pages }) => {
                 <ul className="menu bg-base-200 min-h-full w-80 p-4">
                     {/* Sidebar content here */}
                     <Logo></Logo>
-                    <li className='text-xl'><NavLink to={"/"}><House />Home</NavLink></li>
-                    <li className='text-xl'><NavLink to={"/categories"}><LayoutGrid />Categories</NavLink></li>
-                    <li className='text-xl'><NavLink to={"/products"}><Handbag />Products</NavLink></li>
+                    <li className='text-lg '><NavLink to={"/"} className='border-l-4 border-l-transparent'><House size={20}/>Home</NavLink></li>
+                    <li className='text-lg '><NavLink to={"/categories"} className='border-l-4 border-l-transparent'><LayoutGrid size={20}/>Categories</NavLink></li>
+                    <li className='text-lg '><NavLink to={"/products"} className='border-l-4 border-l-transparent'><Handbag size={20}/>Products</NavLink></li>
                     <LogOut></LogOut>
                 </ul>
             </div>
