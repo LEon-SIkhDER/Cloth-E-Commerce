@@ -101,7 +101,7 @@ const AddProductFormModal = () => {
                     imageData.append('file', file)
                     imageData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET)
                     const { data } = await axios.post(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, imageData)
-                    return data.secure_url
+                    return { url: data.secure_url, publicId: data.public_id }
                 })
             )
             toast.dismiss(toastIdImage)
@@ -384,21 +384,6 @@ const AddProductFormModal = () => {
                             </button>
                         </div>
                     </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 </div>
                 <form method="dialog" className="modal-backdrop">
                     <button>close</button>

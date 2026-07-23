@@ -3,9 +3,10 @@ import AddProductFormModal from "./AddProductFormModal";
 import Image from "next/image";
 import getTotalProductCount from "@/lib/getTotalProductCount";
 import ProductStatus from "./ProductStatus";
+import DeleteProduct from "./DeleteProduct";
 
 const page = async () => {
-    const productsRes = await fetch("http://localhost:8000/products");
+    const productsRes = await fetch("http://localhost:8000/products", { cache: "no-store" });
     const products = await productsRes.json();
 
 
@@ -13,10 +14,10 @@ const page = async () => {
         const price = Number(product.price);
         const discount = Number(product.discount);
         if (product.discountType === "taka") {
-            return price - discount;
+            return (price - discount);
         }
         if (product.discountType === "percentage") {
-            return price - (price * discount) / 100;
+            return Math.round(price - (price * discount) / 100);
         }
         return price;
     };
@@ -56,7 +57,7 @@ const page = async () => {
 
                                 <td>
                                     <Image
-                                        src={product.images[0]}
+                                        src={product.images[0].url}
                                         alt={product.name}
                                         width={60}
                                         height={60}
@@ -135,7 +136,7 @@ const page = async () => {
                                             <li><button><Eye size={16} />View</button></li>
                                             <li><button><Pencil size={16} />Edit</button></li>
                                             <li><ProductStatus status={product.status}></ProductStatus></li>
-                                            <li><button className="text-error"><Trash2 size={16} />Delete</button></li>
+                                            <DeleteProduct id={product._id}></DeleteProduct>
                                         </ul>
                                     </div>
                                 </td>
@@ -144,27 +145,6 @@ const page = async () => {
                     </tbody>
                 </table>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             {products.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20">
                     <h2 className="text-2xl font-semibold text-gray-500">
