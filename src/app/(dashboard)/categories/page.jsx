@@ -106,7 +106,7 @@ const Categories = async () => {
                                                 </div>
                                                 {/* <div tabIndex={0} role="button" className="btn m-1">Click</div> */}
                                                 <ul tabIndex="-1" className="dropdown-content menu bg-base-100 border border-white/10 rounded-box z-1 w-52 p-2 shadow-sm *:text-left  ">
-                                                    <li><Link href={`category/${category._id}`}><Eye size={16} />View</Link></li>
+                                                    <li><Link href={`categories/${category._id}`}><Eye size={16} />View</Link></li>
                                                     <li><a><SquarePen size={16} />Edit</a></li>
                                                     <DeactivateCategory categoryData={{ id: category._id, isActive: !category.isActive }}></DeactivateCategory>
                                                     <DeleteCategory categoryId={category._id} ></DeleteCategory>

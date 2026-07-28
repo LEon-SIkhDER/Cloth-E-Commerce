@@ -30,7 +30,6 @@ const AddProductFormModal = () => {
 
         }
     })
-    console.log(categoryNames)
 
     // form extra size button
     const [sizeFieldCount, setSizeFieldCount] = useState(1)
@@ -38,7 +37,6 @@ const AddProductFormModal = () => {
     const [discountType, setDiscountType] = useState("taka")
 
     const handleDiscountType = (e) => {
-        console.log(e.target.value)
         setDiscountType(e.target.value)
     }
 
@@ -47,7 +45,6 @@ const AddProductFormModal = () => {
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files)
-        // console.log(typeof files, files )
         if (files) {
             const fileUrls = files.map(file => URL.createObjectURL(file))
             setPreviews(fileUrls)
@@ -56,7 +53,7 @@ const AddProductFormModal = () => {
 
 
 
-    const handleAddProduct = async (e) => {
+    const handleAddProduct = async (e) => { // .................................................................................................
         e.preventDefault()
         modalRef.current.close()
         const toastIdImage = toast.loading('Image Uploading...')
@@ -64,7 +61,12 @@ const AddProductFormModal = () => {
 
 
         const formData = Object.fromEntries(formEntries)
-        formData.status = formEntries.get("status") === 'on' ? "draft" : "active"
+
+        // categoryName
+        const categoryNameObj = categoryNames.find(item => item._id == formData.categoryId)
+        console.log(categoryNameObj)
+
+        // formData.status = formEntries.get("status") === 'on' ? "draft" : "active"
 
         const variants = []
 
@@ -81,12 +83,7 @@ const AddProductFormModal = () => {
         const categoryNameField = categoryNames.find(item => item._id === formData.categoryId)
         formData.categoryName = categoryNameField.name
         formData.variants = variants
-        console.log(formData)
-
-
-
         // const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`, imageData)
-        // console.log(data.data.url)
         // const photoUrl = data.data.url
         // formData.logo = photoUrl
 
@@ -94,7 +91,6 @@ const AddProductFormModal = () => {
         try {
             // upload Image >>>>>>>>>>>>>>>> 
             const images = formEntries.getAll("images") // images in an array
-            console.log(images)
             const imageUrls = await Promise.all(
                 images.map(async (file) => {
                     const imageData = new FormData()
@@ -106,7 +102,6 @@ const AddProductFormModal = () => {
             )
             toast.dismiss(toastIdImage)
             toastIdProduct = toast.loading('New Product Adding...')
-            console.log(imageUrls)
             formData.images = imageUrls
             // send data to database >>>>>>>>>>>>>>
             const { data: result } = await axios.post("http://localhost:8000/product", formData)
@@ -149,10 +144,10 @@ const AddProductFormModal = () => {
                             <label className="block text-sm font-medium mb-2">Product Image</label>
                             <div
                                 onClick={() => fileInputRef.current.click()}
-                                className="border-2 flex justify-center items-center border-dashed border-gray-300 rounded-lg  text-center cursor-pointer hover:border-primary transition h-44 "
+                                className="border-2  flex justify-center items-center border-dashed border-gray-300 rounded-lg  text-center cursor-pointer hover:border-primary transition h-44 "
                             >
                                 {previews ? (
-                                    <div className="flex h-full items-center justify-center gap-2  px-8 w-6xl relative  overflow-x-auto ">
+                                    <div className="flex h-full items-center  gap-2  px-8   overflow-x-auto  ">
                                         {previews.map((preview, index) => (
                                             <Image
                                                 key={index}

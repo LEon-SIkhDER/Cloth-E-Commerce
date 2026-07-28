@@ -3,7 +3,6 @@ import { Ban, CircleCheckBig } from 'lucide-react';
 import React from 'react';
 
 const ProductStatus = ({ status }) => {
-    console.log('status from fn', status)
     return (
         <>
             {

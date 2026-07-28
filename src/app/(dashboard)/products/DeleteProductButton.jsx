@@ -6,14 +6,16 @@ import React, { useEffect, useRef, useState, useTransition } from 'react';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 
-const DeleteProduct = ({ id }) => {
+const DeleteProductButton = ({ id, children, className, navigate }) => {
     const [isPending, startTransition] = useTransition()
+    // const router = useRouter()
     // const [success, setSuccess] = useState(false)
     const isSuccess = useRef(false)
     const toastId = useRef(null)
     console.log(isPending)
     const router = useRouter()
     const handleProductDelete = async () => {
+        if (toastId.current) return
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
                 confirmButton: "btn btn-success",
@@ -38,7 +40,12 @@ const DeleteProduct = ({ id }) => {
                     const { data } = await axios.delete(`http://localhost:8000/product/${id}`)
                     console.log(data)
                     isSuccess.current = true
-                    startTransition(() => router.refresh())
+                    if (!navigate) {
+                        startTransition(() => router.refresh())
+                    } else {
+                        router.push(navigate)
+                    }
+
                 } catch (error) {
                     toast.dismiss(toastId.current)
                     toast.error(error.message || "Something went wrong")
@@ -60,8 +67,8 @@ const DeleteProduct = ({ id }) => {
     }, [])
     console.log(id)
     return (
-        <li><button onClick={handleProductDelete} className="text-error"><Trash2 size={16} />Delete</button></li>
+        <button onClick={handleProductDelete} className={className}>{children}</button>
     );
 };
 
-export default DeleteProduct;
+export default DeleteProductButton;

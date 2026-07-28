@@ -3,7 +3,10 @@ import AddProductFormModal from "./AddProductFormModal";
 import Image from "next/image";
 import getTotalProductCount from "@/lib/getTotalProductCount";
 import ProductStatus from "./ProductStatus";
-import DeleteProduct from "./DeleteProduct";
+// import DeleteProduct from "./DeleteProductButton";
+import EditProduct from "./EditProduct";
+import Link from "next/link";
+import DeleteProductButton from "./DeleteProductButton";
 
 const page = async () => {
     const productsRes = await fetch("http://localhost:8000/products", { cache: "no-store" });
@@ -133,10 +136,10 @@ const page = async () => {
                                             tabIndex={0}
                                             className="dropdown-content  menu p-2 shadow bg-base-100 rounded-box w-48 border border-white/10"
                                         >
-                                            <li><button><Eye size={16} />View</button></li>
-                                            <li><button><Pencil size={16} />Edit</button></li>
+                                            <li><Link href={`/products/${product._id}`}><Eye size={16} />View</Link></li>
+                                            <EditProduct product={product}></EditProduct>
                                             <li><ProductStatus status={product.status}></ProductStatus></li>
-                                            <DeleteProduct id={product._id}></DeleteProduct>
+                                            <li><DeleteProductButton id={product._id} className={"text-error"} ><Trash2 size={16} />Delete</DeleteProductButton></li>
                                         </ul>
                                     </div>
                                 </td>
