@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
-@plugin "daisyui" {
-  themes: light --default;
-}
+@plugin "daisyui" ;
 
 .active {
   background: rgba(31, 37, 32, 0.08);

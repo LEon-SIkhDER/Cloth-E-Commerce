@@ -14,7 +14,7 @@ const Categories = async () => {
 
     return (
         <div className="space-y-7">
-            <div className="flex flex-col justify-between gap-4 rounded-[1.5rem] border border-[#1f2520]/10 bg-white p-6 shadow-sm sm:flex-row sm:items-center">
+            <div className="flex flex-col justify-between gap-4 rounded-3xl border border-[#1f2520]/10 bg-white p-6 shadow-sm sm:flex-row sm:items-center">
                 <div>
                     <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#8d6047]">Catalog setup</p>
                     <h1 className="mt-2 text-4xl font-black text-[#1f2520]">Categories</h1>
@@ -22,11 +22,11 @@ const Categories = async () => {
                 </div>
                 <AddCategoryFormModal categoryNames={categoryNames}></AddCategoryFormModal>
             </div>
-            <div className="overflow-hidden rounded-[1.5rem] border border-[#1f2520]/10 bg-white shadow-sm">
-                <div className="overflow-x-auto">
+            <div className=" rounded-3xl border border-[#1f2520]/10 bg-white shadow-sm">
+                <div className="">
                     <table className="table w-full">
                         <thead className="bg-[#f1eadf] text-xs uppercase tracking-[0.14em] text-[#596255]">
-                            <tr>
+                            <tr className='*:first:rounded-tl-3xl *:last:rounded-tr-3xl'>
                                 <th>#</th>
                                 <th>Logo</th>
                                 <th>Name</th>
@@ -40,7 +40,7 @@ const Categories = async () => {
 
                         <tbody>
                             {categories.map((category, index) => (
-                                <tr key={category._id} className="border-[#1f2520]/8 hover:bg-[#fbf8f1]">
+                                <tr key={category._id} className={`border-[#1f2520]/8 hover:bg-[#fbf8f1] ${categories.length === index + 1 ?"*:first:rounded-bl-3xl *:last:rounded-br-3xl" :""}`}>
                                     <th className="text-[#7a8276]">{index + 1}</th>
 
                                     <td>

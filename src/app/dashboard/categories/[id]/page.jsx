@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import EditProduct from "../../products/EditProduct";
+import { Eye, Pencil } from "lucide-react";
 
 const CategoryDetailsPage = async ({ params }) => {
     const { id } = await params
@@ -147,7 +148,7 @@ const CategoryDetailsPage = async ({ params }) => {
 
                                     </div>
 
-                                    <div className="flex justify-between items-center pt-3">
+                                    {/* <div className="flex justify-between items-center pt-3">
 
                                         <span
                                             className={`badge ${product.status === "active"
@@ -175,6 +176,76 @@ const CategoryDetailsPage = async ({ params }) => {
                                             >
                                                 Edit
                                             </EditProduct>
+
+                                        </div>
+
+                                    </div> */}
+                                    {/* <div className="flex items-center justify-between pt-4 border-t border-base-200">
+
+     
+                                        <span
+                                            className={`badge badge-sm ${product.status === "active"
+                                                    ? "badge-success"
+                                                    : product.status === "draft"
+                                                        ? "badge-warning"
+                                                        : "badge-error"
+                                                } capitalize`}
+                                        >
+                                            {product.status}
+                                        </span>
+
+                                   
+                                        <div className="flex items-center gap-2">
+
+                                            <EditProduct
+                                                product={product}
+                                                className="btn btn-sm btn-ghost gap-1.5"
+                                            >
+                                                Edit
+                                            </EditProduct>
+
+                                            <Link
+                                                href={`/dashboard/products/${product._id}`}
+                                                className="btn btn-sm btn-primary px-4"
+                                            >
+                                                View Product
+                                            </Link>
+
+                                        </div>
+
+                                    </div> */}
+                                    <div className="flex items-center justify-between pt-4 border-t border-base-200">
+
+                                        {/* Status */}
+                                        <span
+                                            className={`badge badge-sm ${product.status === "active"
+                                                    ? "badge-success"
+                                                    : product.status === "draft"
+                                                        ? "badge-warning"
+                                                        : "badge-error"
+                                                } capitalize`}
+                                        >
+                                            {product.status}
+                                        </span>
+
+                                        {/* Actions */}
+                                        <div className="flex items-center gap-1">
+
+                                            <EditProduct
+                                                product={product}
+                                                className="btn btn-sm btn-ghost"
+                                            >
+                                                <Pencil size={15} />
+                                                Edit
+                                            </EditProduct>
+
+                                            <Link
+                                                href={`/dashboard/products/${product._id}`}
+                                                className="btn btn-sm btn-primary"
+                                            >
+                                                <Eye size={15} />
+                                                View
+                                            </Link>
 
                                         </div>
 

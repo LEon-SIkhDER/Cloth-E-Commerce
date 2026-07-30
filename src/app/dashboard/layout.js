@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import SideBar from "@/SharedComponent/SideBar";
+import SideBar from "@/SharedComponent/SideBar/SideBar";
 // import { router } from "better-auth/api";
 // import { redirect } from "next/dist/server/api-utils";
 import { headers } from "next/headers";
