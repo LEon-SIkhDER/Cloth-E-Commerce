@@ -1,10 +1,9 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
-// import "../globals.css"
 
 const MainLayout = ({children}) => {
     return (
-        <div>
+        <div className="min-h-screen bg-[#f8f5ef]">
             <Toaster></Toaster>
             {children}
         </div>

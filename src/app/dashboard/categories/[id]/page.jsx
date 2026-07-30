@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import EditProduct from "../../products/EditProduct";
 
 const CategoryDetailsPage = async ({ params }) => {
     const { id } = await params
@@ -86,7 +87,7 @@ const CategoryDetailsPage = async ({ params }) => {
                         return (
                             <div
                                 key={product._id}
-                                className="border border-white/10 rounded-xl overflow-hidden "
+                                className="shadow  rounded-xl overflow-hidden "
                             >
                                 <Image
                                     src={product.images[0].url}
@@ -154,7 +155,7 @@ const CategoryDetailsPage = async ({ params }) => {
                                                 : product.status === "draft"
                                                     ? "badge-warning"
                                                     : "badge-error"
-                                                }`}
+                                                } capitalize`}
                                         >
                                             {product.status}
                                         </span>
@@ -162,18 +163,18 @@ const CategoryDetailsPage = async ({ params }) => {
                                         <div className="flex gap-2">
 
                                             <Link
-                                                href={`/products/${product._id}`}
+                                                href={`/dashboard/products/${product._id}`}
                                                 className="btn btn-sm"
                                             >
                                                 View
                                             </Link>
 
-                                            <Link
-                                                href={`/dashboard/products/edit/${product._id}`}
+                                            <EditProduct
+                                                product={product}
                                                 className="btn btn-sm btn-primary"
                                             >
                                                 Edit
-                                            </Link>
+                                            </EditProduct>
 
                                         </div>
 

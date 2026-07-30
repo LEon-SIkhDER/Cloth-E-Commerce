@@ -8,9 +8,11 @@ const uri = process.env.MONGODB_URI
 
 
 
-    if(!uri){
-        throw new Error('MONGODB_URI IS MISSING')
-    }
+if (!uri) {
+    throw new Error('MONGODB_URI IS MISSING')
+}
+
+
 
 
 const client = new MongoClient(uri);

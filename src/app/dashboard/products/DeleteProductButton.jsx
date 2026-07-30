@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState, useTransition } from 'react';
+import React, { useEffect, useRef, useTransition } from 'react';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 
@@ -64,7 +64,7 @@ const DeleteProductButton = ({ id, children, className, navigate }) => {
                 isSuccess.current = false
             }
         }
-    }, [])
+    }, [isPending])
     console.log(id)
     return (
         <button onClick={handleProductDelete} className={className}>{children}</button>

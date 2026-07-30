@@ -3,6 +3,9 @@ import Link from "next/link";
 import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 import React from "react";
 import DeleteProductButton from "../DeleteProductButton";
+import ImageModalButton from "./ImageModalButton";
+import EditProduct from "../EditProduct";
+import NavigateBackButton from "@/Components/NavigateBackButton";
 // import { useParams } from "next/navigation";
 const Info = ({ label, value }) => {
     return (
@@ -11,7 +14,7 @@ const Info = ({ label, value }) => {
                 {label}
             </p>
 
-            <p className="font-medium">
+            <p className={`font-medium  ${label.toLowerCase() === 'status' ? (value === "active" ? "badge-success badge capitalize" : value === "inactive" ? "badge-error badge capitalize" : value === "draft" ? "badge-warning badge capitalize" : "") : ""}`}>
                 {value}
             </p>
         </div>
@@ -61,56 +64,41 @@ const ProductDetails = async ({ params }) => {
 
     return (
         <div className="p-6 space-y-6">
-
             {/* Header */}
             {/* <div className="flex justify-between items-center"> */}
-
-            <Link
-                href="/products"
+            <NavigateBackButton
                 className="btn btn-outline btn-sm  gap-2"
             >
                 <ArrowLeft size={18} />
                 Back
-            </Link>
-
-
-
+            </NavigateBackButton>
             {/* </div> */}
-
-
-
             {/* Product Main Info */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-
                 {/* Images */}
                 <div className="card bg-base-100 shadow p-5">
-
                     <h2 className="font-semibold text-lg mb-4">
                         Product Images
                     </h2>
-
-
                     <div className="grid grid-cols-2 gap-3">
-
                         {
                             product.images.map((image, index) => (
                                 <div
                                     key={image.publicId}
                                     className="relative aspect-square rounded-lg overflow-hidden"
                                 >
-                                    <Image
-                                        src={image.url}
-                                        alt={product.name}
-                                        fill
-                                        className="object-cover"
-                                    />
+                                    <ImageModalButton images={product.images} index={index} alt={product.name}>
+                                        <Image
+                                            src={image.url}
+                                            alt={product.name}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    </ImageModalButton>
                                 </div>
                             ))
                         }
-
                     </div>
-
                 </div>
 
 
@@ -118,70 +106,44 @@ const ProductDetails = async ({ params }) => {
 
                 {/* Details */}
                 <div className="lg:col-span-2 card bg-base-100 shadow p-5">
-
-
                     <h1 className="text-2xl font-bold">
                         {product.name}
                     </h1>
-
-
                     <div className="divider"></div>
-
-
                     <div className="grid grid-cols-2 gap-4">
-
-
                         <Info
                             label="Product ID"
                             value={product.productId}
                         />
-
-
                         <Info
                             label="Category"
                             value={product.categoryName}
                         />
-
-
                         <Info
                             label="Gender"
                             value={product.gender}
                         />
-
-
                         <Info
                             label="Material"
                             value={product.material}
                         />
-
-
                         <Info
                             label="Original Price"
                             value={`৳ ${product.price}`}
                         />
-
-
                         <Info
                             label="Discount"
                             value={`${product.discount} ${product.discountType}`}
                         />
-
-
                         <Info
                             label="Final Price"
                             value={`৳ ${getFinalPrice()}`}
                         />
-
-
                         <Info
                             label="Status"
                             value={product.status}
                         />
-
                     </div>
-
-
-
                     <div className="mt-5">
 
                         <h3 className="font-semibold mb-2">
@@ -197,12 +159,13 @@ const ProductDetails = async ({ params }) => {
 
                     <div className="flex gap-2 justify-end flex-1 items-end">
 
-                        <button
+                        <EditProduct
+                            product={product}
                             className="btn btn-warning btn-sm flex gap-2"
                         >
                             <Pencil size={17} />
                             Edit
-                        </button>
+                        </EditProduct>
 
 
                         <DeleteProductButton

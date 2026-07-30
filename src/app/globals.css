@@ -1,10 +1,43 @@
 @import "tailwindcss";
 
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark;
+  themes: light --default;
 }
 
 .active {
-  background: rgba(6, 181, 212, 0.5);
-  border-left: 4px solid #06B6D4;
+  background: rgba(31, 37, 32, 0.08);
+  border-left: 4px solid #1f2520;
+  color: #1f2520;
+}
+
+:root {
+  --background: #f8f5ef;
+  --foreground: #1f2520;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(192, 115, 71, 0.15), transparent 34rem),
+    linear-gradient(180deg, #fbf8f1 0%, #f8f5ef 55%, #f2eee5 100%);
+  color: var(--foreground);
+}
+
+::selection {
+  background: #1f2520;
+  color: #fffaf1;
+}
+
+.btn-primary {
+  background-color: #1f2520;
+  border-color: #1f2520;
+  color: #fffaf1;
+}
+
+.btn-primary:hover {
+  background-color: #30382f;
+  border-color: #30382f;
 }

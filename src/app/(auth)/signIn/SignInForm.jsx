@@ -1,6 +1,5 @@
 "use client"
 import { authClient } from '@/lib/auth-client';
-// import { authClient } from '@/lib/auth-client';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -10,56 +9,35 @@ const SignInForm = () => {
         e.preventDefault();
         setLoading(true)
         const formData = Object.fromEntries(new FormData(e.target));
-        formData.callbackURL = "/",
-            console.log(formData);
+        formData.callbackURL = "/";
 
         const { data, error } = await authClient.signIn.email(formData)
         if (error) {
             setLoading(false)
-            toast.error(error.message || "LogIn failed")
-            console.log(error)
+            toast.error(error.message || "Login failed")
         }
         if (data) {
-
             setLoading(false)
-            console.log(data)
+            toast.success("Signed in successfully")
         }
     };
 
     return (
-        <form onSubmit={handleSignIn} className="space-y-4">
-            {/* <div>
-                <label className="mb-1 block font-medium">
-                    Name <span className="text-red-500">*</span>
-                </label>
-                <input type="text" name="name" placeholder="Enter your name" required className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500" />
-            </div> */}
-
+        <form onSubmit={handleSignIn} className="space-y-5">
             <div>
-                <label className="mb-1 block font-medium">
-                    Email <span className="text-red-500">*</span>
-                </label>
-                <input type="email" name="email" placeholder="Enter your email" required className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500" />
+                <label className="mb-2 block text-sm font-bold text-[#31382f]">Email</label>
+                <input type="email" name="email" placeholder="Enter your email" required className="w-full rounded-2xl border border-[#1f2520]/10 bg-[#fffaf1] px-4 py-3 outline-none transition focus:border-[#1f2520]" />
             </div>
 
             <div>
-                <label className="mb-1 block font-medium">
-                    Password <span className="text-red-500">*</span>
-                </label>
-                <input type="password" name="password" placeholder="Enter your password" required className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500" />
+                <label className="mb-2 block text-sm font-bold text-[#31382f]">Password</label>
+                <input type="password" name="password" placeholder="Enter your password" required className="w-full rounded-2xl border border-[#1f2520]/10 bg-[#fffaf1] px-4 py-3 outline-none transition focus:border-[#1f2520]" />
             </div>
 
-            {/* <div>
-                <label className="mb-1 block font-medium">
-                    Photo URL <span className="text-red-500">*</span>
-                </label>
-                <input type="url" name="image" placeholder="Enter photo URL" required className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500" />
-            </div> */}
-
-            <button type="submit" className="w-full rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white transition hover:bg-blue-700 h-10">
+            <button type="submit" className="btn btn-primary h-12 w-full rounded-full font-bold">
                 {loading ?
                     <span className="loading loading-spinner loading-md "></span> :
-                    "LogIn"
+                    "Sign in"
                 }
             </button>
         </form>

@@ -66,7 +66,7 @@ const AddProductFormModal = () => {
         const categoryNameObj = categoryNames.find(item => item._id == formData.categoryId)
         console.log(categoryNameObj)
 
-        // formData.status = formEntries.get("status") === 'on' ? "draft" : "active"
+        formData.status = formEntries.get("status") === 'on' ? "draft" : "active"
 
         const variants = []
 
