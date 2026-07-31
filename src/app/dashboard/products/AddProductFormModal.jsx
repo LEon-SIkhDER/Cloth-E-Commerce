@@ -32,7 +32,7 @@ const AddProductFormModal = () => {
     })
 
     // form extra size button
-    const [sizeFieldCount, setSizeFieldCount] = useState(1)
+    const [variants, setVariants] = useState([{ size: "", color: "", quantity: "", sku: "", tempId: crypto.randomUUID() }])
     // form discount type 
     const [discountType, setDiscountType] = useState("taka")
 
@@ -244,7 +244,16 @@ const AddProductFormModal = () => {
 
                         </div>
                         {/* Size */}
-                        {[...Array(sizeFieldCount)].map((_, index) => (
+                        <div className='flex justify-between'>
+                            <div>
+                                <label className='label m-0 text-black dark:text-white font-semibold'>Variants</label>
+                                <p className='text-gray-500 text-sm'>Manage Size, Color and Quantity</p>
+                            </div>
+                            <button
+                                onClick={() => setVariants(prev => [...prev, { size: "", color: "", quantity: "", sku: "", tempId: crypto.randomUUID() }])} type='button'
+                                className='btn text-cyan-500 bg-cyan-500/10 border border-cyan-500'>+ Add Variant</button>
+                        </div>
+                        {variants.map((_, index) => (
                             <div key={index} className="flex gap-4 items-end">
                                 {/* Size */}
                                 <div className="form-group flex-1">
@@ -287,23 +296,17 @@ const AddProductFormModal = () => {
                                 </div>
 
                                 {/* Add / Remove Button */}
-                                {index === sizeFieldCount - 1 ? (
-                                    <button
-                                        type="button"
-                                        className={`btn h-10 w-10 text-xl border `}
-                                        onClick={() => setSizeFieldCount(prev => prev + 1)}
-                                    >
-                                        +
-                                    </button>
-                                ) : (
+                                {variants.length !== 1 &&
                                     <button
                                         type="button"
                                         className="btn h-10 w-10 text-xl"
-                                        onClick={() => setSizeFieldCount(prev => prev - 1)}
+                                        onClick={() => setVariants(prev => prev.filter((_, i) => i !== index))}
+
                                     >
                                         -
                                     </button>
-                                )}
+                                }
+
                                 {/* </div> */}
                             </div>
                         ))}

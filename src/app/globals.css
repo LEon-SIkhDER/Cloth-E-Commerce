@@ -1,6 +1,6 @@
 @import "tailwindcss";
-
-@plugin "daisyui" ;
+@custom-variant dark (&:where(.dark, .dark *));
+@plugin "daisyui";
 
 .active {
   background: rgba(31, 37, 32, 0.08);

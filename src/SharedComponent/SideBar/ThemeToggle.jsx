@@ -9,8 +9,10 @@ const ThemeToggle = () => {
     return (
         <li className='flex justify-between'>
             <span className='block'>Dark Mode</span>
-            <input onChange={(e) => handleSetDark(e.target.checked)} type="checkbox" defaultChecked className=" toggle border-[#fffaf1] bg-[#fffaf1] checked:border-[#1f2937] checked:bg-[#1f2937]
-                     checked:text-[#fffaf1] hover:brightness-95 transition-all"/>
+            <input
+                checked={isDark}
+                onChange={(e) => handleSetDark(e.target.checked)} type="checkbox"
+                className=" toggle border-[#fffaf1] bg-[#fffaf1] checked:border-[#1f2937] checked:bg-[#1f2937] checked:text-[#fffaf1] hover:brightness-95 transition-all" />
         </li>
     );
 };

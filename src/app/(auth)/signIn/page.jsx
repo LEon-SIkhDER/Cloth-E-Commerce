@@ -25,9 +25,9 @@ const SignIn = () => {
                 </div>
             </section>
             <section className="mx-auto w-full max-w-md">
-                <Link href="/" className="inline-flex">
-                    <Logo />
-                </Link>
+
+                <Logo />
+
                 <div className="mt-10 rounded-[1.5rem] border border-[#1f2520]/10 bg-white/80 p-8 shadow-xl shadow-[#1f2520]/5 backdrop-blur">
                     <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#8d6047]">Welcome back</p>
                     <h2 className="mt-3 text-3xl font-black text-[#1f2520]">Sign in to Threadora</h2>

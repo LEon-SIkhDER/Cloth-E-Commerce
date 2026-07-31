@@ -77,7 +77,7 @@ const Categories = async () => {
                                                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle btn-sm">
                                                     <EllipsisVertical size={18} />
                                                 </div>
-                                                <ul tabIndex="-1" className="dropdown-content menu z-10 w-52 rounded-2xl border border-[#1f2520]/10 bg-white p-2 shadow-xl">
+                                                <ul tabIndex="-1" className="dropdown-content menu z-10 w-52 rounded-2xl border border-[#1f2520]/10 bg-base-100 p-2 shadow-xl">
                                                     <li><Link href={`categories/${category._id}`}><Eye size={16} />View</Link></li>
                                                     <li><a><SquarePen size={16} />Edit</a></li>
                                                     <DeactivateCategory categoryData={{ id: category._id, isActive: !category.isActive }}></DeactivateCategory>

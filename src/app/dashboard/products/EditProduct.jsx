@@ -160,21 +160,13 @@ const EditProduct = ({ product, className, children }) => {
     }
     console.log(previews)
 
-
-
-
-
-
-
-
-
     const handleCancel = (e) => {
         setVariants(product.variants)
         setPreviews(product.images.map(image => ({ url: image.url, publicId: image.publicId })))
         editModalRef.current.close()
     }
     // console.log(sizeFieldCount, product.variants.length)
-    if(!editModalRef) return
+    // if(!editModalRef) return
     return (
         <>
             <button onClick={() => editModalRef.current.showModal()} className={className}>{children}</button>
@@ -306,7 +298,7 @@ const EditProduct = ({ product, className, children }) => {
                                 {/* Size */}
                                 <div className='flex justify-between'>
                                     <div>
-                                        <label className='label m-0 text-white'>Variants</label>
+                                        <label className='label m-0 '>Variants</label>
                                         <p className='text-gray-500 text-sm'>Manage Size, Color and Quantity</p>
                                     </div>
                                     <button

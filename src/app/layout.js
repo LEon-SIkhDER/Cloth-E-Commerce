@@ -22,9 +22,27 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html
+      suppressHydrationWarning
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased `}
     >
+      <head>
+        <script dangerouslySetInnerHTML={
+          {
+            __html: `
+            const theme = localStorage.getItem("dark")
+            const isDark = theme === "true"
+            document.documentElement.setAttribute('data-theme', isDark ? "dark" : "light")
+            if (isDark) {
+              document.documentElement.classList.add("dark")
+            }
+            else {
+              document.documentElement.classList.remove('dark')
+            }
+          `
+          }
+        } />
+      </head>
       <body className="min-h-full flex flex-col bg-[#f8f5ef] text-[#1f2520]">
         <Toaster></Toaster>
         <ThemeProvider>

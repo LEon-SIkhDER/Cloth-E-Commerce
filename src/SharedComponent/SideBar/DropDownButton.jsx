@@ -3,6 +3,7 @@ import { ChevronUp } from 'lucide-react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import ThemeToggle from './ThemeToggle';
 import ThemeContext from '@/Context/ThemeContext';
+import LogOut from '../LogOut';
 
 const DropDownButton = ({ className, children }) => {
     const dropdownRef = useRef()
@@ -28,6 +29,7 @@ const DropDownButton = ({ className, children }) => {
                   *:hover:bg-black/10 *:px-2 *:py-1 *:rounded `} >
                 <li>hello</li>
                 <ThemeToggle></ThemeToggle>
+                <li><LogOut></LogOut></li>
             </ul>
             <div onClick={() => setOpen(prev => !prev)} className={className}>
                 {children}

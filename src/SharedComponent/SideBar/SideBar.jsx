@@ -28,7 +28,7 @@ const SideBar = async ({ pages }) => {
             </div>
             <div className="drawer-side z-40">
                 <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
-                <aside className="flex min-h-full w-80 flex-col  border-r border-[#1f2520]/10 bg-[#fffaf1] p-5 shadow-xl shadow-[#1f2520]/5">
+                <aside className="flex min-h-full w-80 flex-col  border-r border-[#1f2520]/10 bg-[#fffaf1] dark:bg-[#1f2520] p-5 shadow-xl shadow-[#1f2520]/5">
                     <Logo></Logo>
                     <nav className="mt-10 grid gap-2 text-base font-semibold text-[#5b6558]">
                         <NavLink to={"/dashboard"} className="flex items-center gap-3 rounded-2xl border-l-4 border-l-transparent px-4 py-3 transition hover:bg-[#1f2520]/5"><House size={20} />Overview</NavLink>
@@ -42,7 +42,7 @@ const SideBar = async ({ pages }) => {
                     </div> */}
                     <div className=' flex-1'></div>
                     {/* <LogOut></LogOut> */}
-                    <DropDownButton className='flex items-center gap-3 hover:bg-black/10 p-3 rounded-3xl duration-300 cursor-pointer active:scale-[99%]'>
+                    <DropDownButton className='flex items-center gap-3 hover:bg-black/10 p-3 rounded-xl duration-300 cursor-pointer active:scale-[99%]'>
                         <Image
                             src={user.image}
                             height={50}

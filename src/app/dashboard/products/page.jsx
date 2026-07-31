@@ -5,8 +5,9 @@ import getTotalProductCount from "@/lib/getTotalProductCount";
 import ProductStatus from "./ProductStatus";
 import Link from "next/link";
 import DeleteProductButton from "./DeleteProductButton";
-import EditProduct from "./EditProduct";
-import { createPortal } from "react-dom";
+import dynamic from "next/dynamic";
+import EditProductDynamic from "./EditProductDynamic";
+// import { createPortal } from "react-dom";
 
 const page = async () => {
     const productsRes = await fetch("http://localhost:8000/products", { cache: "no-store" });
@@ -56,7 +57,7 @@ const page = async () => {
 
                         <tbody>
                             {products.map((product, index) => (
-                                <tr key={product._id} className={`border-[#1f2520]/8 hover:bg-[#fbf8f1] ${products.length === index + 1 ? '*:first:rounded-bl-3xl *:last:rounded-br-3xl':""}`}>
+                                <tr key={product._id} className={`border-[#1f2520]/8 hover:bg-[#fbf8f1] ${products.length === index + 1 ? '*:first:rounded-bl-3xl *:last:rounded-br-3xl' : ""}`}>
                                     <td className="text-[#7a8276] ">{index + 1}</td>
 
                                     <td>
@@ -110,9 +111,9 @@ const page = async () => {
                                                 <MoreVertical size={18} />
                                             </button>
 
-                                            <ul tabIndex={0} className="dropdown-content menu z-10 w-48 rounded-2xl border border-[#1f2520]/10 bg-white p-2 shadow-xl">
+                                            <ul tabIndex={0} className="dropdown-content menu z-10 w-48 rounded-2xl border border-[#1f2520]/10 bg-base-100 p-2 shadow-xl">
                                                 <li><Link href={`/dashboard/products/${product._id}`}><Eye size={16} />View</Link></li>
-                                                <li><EditProduct product={product}><Pencil size={16} />Edit</EditProduct></li>
+                                                <li><EditProductDynamic product={product}><Pencil size={16} />Edit</EditProductDynamic></li>
                                                 <li><ProductStatus status={product.status}></ProductStatus></li>
                                                 <li><DeleteProductButton id={product._id} className={"text-error"} ><Trash2 size={16} />Delete</DeleteProductButton></li>
                                             </ul>

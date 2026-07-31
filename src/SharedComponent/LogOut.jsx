@@ -36,15 +36,27 @@ const LogOut = () => {
     }
 
 
+    // return (
+    //     <button
+    //         onClick={logOut}
+    //         className="btn  w-full rounded-xl border-[#1f2520]/10 bg-white text-[#a74432] shadow-none hover:border-[#a74432]/30 hover:bg-[#fff4f1]">
+    //         Sign out
+    //         <LogOutIcon size={16} className="mt-0.5" />
+    //     </button>
+
+    // );
+    
     return (
         <button
             onClick={logOut}
-            className="btn mt-4 w-full rounded-2xl border-[#1f2520]/10 bg-white text-[#a74432] shadow-none hover:border-[#a74432]/30 hover:bg-[#fff4f1]">
+            className="btn  w-full rounded-xl border-[#1f2520]/10 bg-white text-[#a74432] shadow-none hover:border-[#a74432]/30 hover:bg-[#fff4f1]">
             Sign out
             <LogOutIcon size={16} className="mt-0.5" />
         </button>
 
     );
+
+
 };
 
 export default LogOut;
