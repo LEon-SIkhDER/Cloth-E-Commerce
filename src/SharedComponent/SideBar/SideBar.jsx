@@ -6,6 +6,7 @@ import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
 import Image from 'next/image';
 import DropDownButton from './DropDownButton';
+// import defaultUserImage from '@/user.png'
 
 const SideBar = async ({ pages }) => {
     const { user } = await auth.api.getSession({
@@ -44,11 +45,11 @@ const SideBar = async ({ pages }) => {
                     {/* <LogOut></LogOut> */}
                     <DropDownButton className='flex items-center gap-3 hover:bg-black/10 p-3 rounded-xl duration-300 cursor-pointer active:scale-[99%]'>
                         <Image
-                            src={user.image}
+                            src={user.image || "/user2.png"}
                             height={50}
                             width={50}
                             alt={user.name}
-                            className='rounded-full object-cover border border-red-500 h-12.5 w-12.5 '
+                            className='rounded-full object-cover h-12.5 w-12.5 '
                         />
                         <div>
                             <h4 className=' font-semibold'>{user.name}</h4>

@@ -253,8 +253,8 @@ const AddProductFormModal = () => {
                                 onClick={() => setVariants(prev => [...prev, { size: "", color: "", quantity: "", sku: "", tempId: crypto.randomUUID() }])} type='button'
                                 className='btn text-cyan-500 bg-cyan-500/10 border border-cyan-500'>+ Add Variant</button>
                         </div>
-                        {variants.map((_, index) => (
-                            <div key={index} className="flex gap-4 items-end">
+                        {variants.map((variant, index) => (
+                            <div key={variant.tempId} className="flex gap-4 items-end">
                                 {/* Size */}
                                 <div className="form-group flex-1">
                                     <label className="block text-sm font-medium mb-2">Sizes</label>

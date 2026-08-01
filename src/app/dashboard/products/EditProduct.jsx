@@ -358,7 +358,7 @@ const EditProduct = ({ product, className, children }) => {
                                             <button
                                                 type="button"
                                                 className="btn h-10 w-10  p-0 border border-red-500 text-red-500"
-                                                onClick={() => setVariants(prev => prev.filter((_, i) => i !== index))}
+                                                onClick={() => setVariants(prev => prev.filter((_, i) => i !== index))} 
                                             >
                                                 <Minus size={20} />
                                             </button>

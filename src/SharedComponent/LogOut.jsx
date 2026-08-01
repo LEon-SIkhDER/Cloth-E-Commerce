@@ -45,11 +45,13 @@ const LogOut = () => {
     //     </button>
 
     // );
-    
+
     return (
         <button
             onClick={logOut}
-            className="btn  w-full rounded-xl border-[#1f2520]/10 bg-white text-[#a74432] shadow-none hover:border-[#a74432]/30 hover:bg-[#fff4f1]">
+            // className="btn  w-full rounded-xl border-[#1f2520]/10 bg-white text-[#a74432] shadow-none hover:border-[#a74432]/30 hover:bg-[#fff4f1]"
+            className='flex items-center gap-2 text-[#a74432] w-full cursor-pointer'
+            >
             Sign out
             <LogOutIcon size={16} className="mt-0.5" />
         </button>

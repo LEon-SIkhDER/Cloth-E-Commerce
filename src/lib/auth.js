@@ -8,9 +8,9 @@ const uri = process.env.MONGODB_URI
 
 
 
-if (!uri) {
-    throw new Error('MONGODB_URI IS MISSING')
-}
+// if (!uri) {
+//     throw new Error('MONGODB_URI IS MISSING')
+// }
 
 
 
@@ -21,6 +21,20 @@ const db = client.db("Cloth_E_Commerce");
 export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
+    },
+    user: {
+        additionalFields: {
+            role: {
+                type: "string",
+                defaultValue: "user",
+                input: false
+            },
+            banned: {
+                type: "boolean",
+                defaultValue: false,
+                input: false
+            },
+        }
     },
     database: mongodbAdapter(db, {
         // Optional: if you don't provide a client, database transactions won't be enabled.

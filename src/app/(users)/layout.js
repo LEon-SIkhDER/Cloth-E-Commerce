@@ -3,14 +3,14 @@ import Link from 'next/link';
 import { ArrowRight, Menu, Search, ShoppingBag, UserRound } from 'lucide-react';
 import Logo from '@/Components/Logo';
 
-const HomeLayout = ({children}) => {
+const HomeLayout = ({ children }) => {
     return (
         <div className="min-h-screen">
             <header className="sticky top-0 z-30 border-b border-[#1f2520]/10 bg-[#fbf8f1]/90 backdrop-blur-xl">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-                    <Link href="/" aria-label="Threadora home">
-                        <Logo />
-                    </Link>
+
+                    <Logo />
+
                     <nav className="hidden items-center gap-8 text-sm font-semibold text-[#4f584d] md:flex">
                         <a href="#collections" className="transition hover:text-[#1f2520]">Collections</a>
                         <a href="#editorial" className="transition hover:text-[#1f2520]">Editorial</a>

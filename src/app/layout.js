@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased `}
     >
       <head>
-        <script dangerouslySetInnerHTML={
+        {/* <script dangerouslySetInnerHTML={
           {
             __html: `
             const theme = localStorage.getItem("dark")
@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
             }
           `
           }
-        } />
+        } /> */}
       </head>
       <body className="min-h-full flex flex-col bg-[#f8f5ef] text-[#1f2520]">
         <Toaster></Toaster>

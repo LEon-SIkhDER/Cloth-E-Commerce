@@ -14,7 +14,6 @@ const SignInForm = () => {
         const { data, error } = await authClient.signIn.email(formData)
         if (error) {
             setLoading(false)
-            toast.error(error.message || "Login failed")
         }
         if (data) {
             setLoading(false)

@@ -8,7 +8,7 @@ const ThemeToggle = () => {
 
     return (
         <li className='flex justify-between'>
-            <span className='block'>Dark Mode</span>
+            <span className='block select-none'>Dark Mode</span>
             <input
                 checked={isDark}
                 onChange={(e) => handleSetDark(e.target.checked)} type="checkbox"
