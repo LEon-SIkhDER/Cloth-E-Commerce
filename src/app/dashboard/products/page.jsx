@@ -114,7 +114,7 @@ const page = async () => {
                                             <ul tabIndex={0} className="dropdown-content menu z-10 w-48 rounded-2xl border border-[#1f2520]/10 bg-base-100 p-2 shadow-xl">
                                                 <li><Link href={`/dashboard/products/${product._id}`}><Eye size={16} />View</Link></li>
                                                 <li><EditProductDynamic product={product}><Pencil size={16} />Edit</EditProductDynamic></li>
-                                                <li><ProductStatus status={product.status}></ProductStatus></li>
+                                                <li><ProductStatus id={product._id} status={product.status}></ProductStatus></li>
                                                 <li><DeleteProductButton id={product._id} className={"text-error"} ><Trash2 size={16} />Delete</DeleteProductButton></li>
                                             </ul>
 
