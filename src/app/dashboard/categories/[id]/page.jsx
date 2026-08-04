@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import EditProduct from "../../products/EditProduct";
-import { Eye, Pencil } from "lucide-react";
+import { Eye, Pencil, Shirt } from "lucide-react";
 
 const CategoryDetailsPage = async ({ params }) => {
     const { id } = await params
@@ -35,14 +35,19 @@ const CategoryDetailsPage = async ({ params }) => {
             {/* Category Header */}
             <div className="rounded-xl   p-6 bg-black/10">
                 <div className="flex items-center gap-5">
-
-                    <Image
-                        src={category.logo}
-                        alt={category.name}
-                        width={90}
-                        height={90}
-                        className="rounded-lg border border-white/10"
-                    />
+                    {category.logo ?
+                        <Image
+                            src={category.logo.url}
+                            alt={category.name}
+                            width={90}
+                            height={90}
+                            className="rounded-lg border border-white/10 object-cover h-22.5 w-22.5"
+                        />
+                        :
+                        <div className="grid h-22.5 w-22.5 place-items-center rounded-lg border border-[#1f2520]/10 bg-[#f6f2e9] text-[#8d6047]" >
+                            <Shirt size={30} />
+                        </div>
+                    }
 
                     <div>
                         <h1 className="text-3xl font-bold">{category.name}</h1>
@@ -219,10 +224,10 @@ const CategoryDetailsPage = async ({ params }) => {
                                         {/* Status */}
                                         <span
                                             className={`badge badge-sm ${product.status === "active"
-                                                    ? "badge-success"
-                                                    : product.status === "draft"
-                                                        ? "badge-warning"
-                                                        : "badge-error"
+                                                ? "badge-success"
+                                                : product.status === "draft"
+                                                    ? "badge-warning"
+                                                    : "badge-error"
                                                 } capitalize`}
                                         >
                                             {product.status}

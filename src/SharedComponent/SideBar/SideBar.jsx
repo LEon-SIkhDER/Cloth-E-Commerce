@@ -1,6 +1,6 @@
 import Logo from '@/Components/Logo';
 import LogOut from '../LogOut';
-import { ChevronUp, Handbag, House, LayoutGrid, Menu } from 'lucide-react';
+import { ChevronUp, Handbag, House, LayoutGrid, Menu, Tag } from 'lucide-react';
 import NavLink from '@/Components/NavLink';
 import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
@@ -35,6 +35,7 @@ const SideBar = async ({ pages }) => {
                         <NavLink to={"/dashboard"} className="flex items-center gap-3 rounded-2xl border-l-4 border-l-transparent px-4 py-3 transition hover:bg-[#1f2520]/5"><House size={20} />Overview</NavLink>
                         <NavLink to={"/dashboard/categories"} className="flex items-center gap-3 rounded-2xl border-l-4 border-l-transparent px-4 py-3 transition hover:bg-[#1f2520]/5"><LayoutGrid size={20} />Categories</NavLink>
                         <NavLink to={"/dashboard/products"} className="flex items-center gap-3 rounded-2xl border-l-4 border-l-transparent px-4 py-3 transition hover:bg-[#1f2520]/5"><Handbag size={20} />Products</NavLink>
+                        <NavLink to={"/dashboard/promo-codes"} className="flex items-center gap-3 rounded-2xl border-l-4 border-l-transparent px-4 py-3 transition hover:bg-[#1f2520]/5"><Tag size={20} />Promo Codes</NavLink>
                     </nav>
                     {/* Store Health */}
                     {/* <div className="mt-auto rounded-3xl border border-[#1f2520]/10 bg-[#f6f2e9] p-4">

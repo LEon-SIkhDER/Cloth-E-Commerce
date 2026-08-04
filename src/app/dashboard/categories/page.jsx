@@ -6,6 +6,8 @@ import { EllipsisVertical, Eye, Shirt, SquarePen } from 'lucide-react';
 import DeleteCategory from './DeleteCategory';
 import DeactivateCategory from './DeactivateCategory';
 import Link from 'next/link';
+import EditCategoryButtonDynamic from './EditCategoryButtonDynamic';
+
 
 const Categories = async () => {
     const categoriesRes = await fetch("http://localhost:8000/categories")
@@ -40,13 +42,13 @@ const Categories = async () => {
 
                         <tbody>
                             {categories.map((category, index) => (
-                                <tr key={category._id} className={`border-[#1f2520]/8 hover:bg-[#fbf8f1] ${categories.length === index + 1 ?"*:first:rounded-bl-3xl *:last:rounded-br-3xl" :""}`}>
+                                <tr key={category._id} className={`border-[#1f2520]/8 hover:bg-[#fbf8f1] ${categories.length === index + 1 ? "*:first:rounded-bl-3xl *:last:rounded-br-3xl" : ""}`}>
                                     <th className="text-[#7a8276]">{index + 1}</th>
 
                                     <td>
                                         {category.logo ?
                                             <Image
-                                                src={category.logo}
+                                                src={category.logo.url}
                                                 alt={category.name}
                                                 height={48}
                                                 width={48}
@@ -79,7 +81,7 @@ const Categories = async () => {
                                                 </div>
                                                 <ul tabIndex="-1" className="dropdown-content menu z-10 w-52 rounded-2xl border border-[#1f2520]/10 bg-base-100 p-2 shadow-xl">
                                                     <li><Link href={`categories/${category._id}`}><Eye size={16} />View</Link></li>
-                                                    <li><a><SquarePen size={16} />Edit</a></li>
+                                                    <li><EditCategoryButtonDynamic category={category}><SquarePen size={16} />Edit</EditCategoryButtonDynamic></li>
                                                     <DeactivateCategory categoryData={{ id: category._id, isActive: !category.isActive }}></DeactivateCategory>
                                                     <DeleteCategory categoryId={category._id} ></DeleteCategory>
                                                 </ul>

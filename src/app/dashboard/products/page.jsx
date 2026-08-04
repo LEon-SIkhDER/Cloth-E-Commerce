@@ -10,7 +10,7 @@ import EditProductDynamic from "./EditProductDynamic";
 // import { createPortal } from "react-dom";
 
 const page = async () => {
-    const productsRes = await fetch("http://localhost:8000/products", { cache: "no-store" });
+    const productsRes = await fetch("http://localhost:8000/products");
     const products = await productsRes.json();
 
     const portalRoot = typeof document !== "undefined" ? document.body : null

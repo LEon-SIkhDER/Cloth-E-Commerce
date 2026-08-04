@@ -24,7 +24,7 @@ const ProductStatus = ({ id, status }) => {
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Yes, Deactivate!",
+            confirmButtonText: status === "active" ? "Yes, Deactivate!" : "Yes, Activate",
             cancelButtonText: "No, Cancel!",
             background: "#191e24",
             color: "white",
@@ -60,16 +60,6 @@ const ProductStatus = ({ id, status }) => {
                 <><Ban size={16} />Deactivate</>
             }
         </button>
-        // <>
-        //     {
-        //         status === "draft" || "inActive" ?
-        //             <button className='text-success'><CircleCheckBig size={16} />Activate</button>
-        //             :
-        //             <button className='text-warning'><Ban size={16} />Deactivate</button>
-
-        //     }
-        // </>
-
     );
 };
 

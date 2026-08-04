@@ -12,8 +12,8 @@ const AddCategoryFormModal = ({ categoryNames }) => {
     const modalRef = useRef()
     const fileInputRef = useRef()
     const router = useRouter()
-    const [preview, setPreview] = useState(null)
     const [nameError, setNameError] = useState()
+    const [preview, setPreview] = useState(null)
 
 
 
@@ -47,15 +47,20 @@ const AddCategoryFormModal = ({ categoryNames }) => {
         try {
             if (formData.logo.name) {
                 const imageData = new FormData()
-                imageData.append('image', formData.logo)
-                const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`, imageData)
-                console.log(data.data.url)
-                const photoUrl = data.data.url
-                formData.logo = photoUrl
+                imageData.append('file', formData.logo)
+                imageData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET)
+
+
+
+                const { data } = await axios.post(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, imageData)
+                formData.logo = { url: data.secure_url, publicId: data.public_id }
+
+
+
                 console.log(formData)
             }
             else {
-                formData.logo = ""
+                formData.logo = null
             }
 
 
@@ -83,7 +88,7 @@ const AddCategoryFormModal = ({ categoryNames }) => {
 
     return (
         <div>
-            <button onClick={() => modalRef.current.showModal()} className='btn btn-primary'><Plus className='mt-px' size={16} /> Add Category</button>
+            <button onClick={() => modalRef.current.showModal()} className='btn bg-[#f6f2e9] shadow-none border border-[#f3eee5] text-black'><Plus className='mt-px' size={16} /> Add Category</button>
             <dialog ref={modalRef} className="modal">
                 <div className="modal-box">
                     <form method="dialog">
@@ -97,7 +102,7 @@ const AddCategoryFormModal = ({ categoryNames }) => {
                             <label className="block text-sm font-medium mb-2">Category Logo</label>
                             <div
                                 onClick={() => fileInputRef.current.click()}
-                                className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition"
+                                className={`border-2 border-dashed border-gray-300 rounded-lg px-8 ${preview ? "py-2" : "py-8"}  text-center cursor-pointer hover:border-primary transition`}
                             >
                                 {preview ? (
                                     <div className="flex flex-col items-center">
@@ -126,7 +131,7 @@ const AddCategoryFormModal = ({ categoryNames }) => {
                                 onChange={handleImageChange}
                                 className="hidden"
                                 name='logo'
-                                
+
                             />
                         </div>
 
@@ -136,7 +141,6 @@ const AddCategoryFormModal = ({ categoryNames }) => {
                             <input
                                 onChange={handleCategoryName}
                                 type="text"
-                                id="categoryName"
                                 name="name"
                                 placeholder="Enter category name"
                                 className="input input-bordered w-full"

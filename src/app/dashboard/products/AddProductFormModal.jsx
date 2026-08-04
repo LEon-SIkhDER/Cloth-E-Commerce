@@ -23,7 +23,7 @@ const AddProductFormModal = () => {
     const [previews, setPreviews] = useState(null)
 
     const { data: categoryNames, isLoading } = useQuery({
-        queryKey: ['category-name'],
+        queryKey: ['category-names'],
         queryFn: async () => {
             const { data: result } = await axios.get("http://localhost:8000/categoryNames")
             return result
@@ -130,7 +130,7 @@ const AddProductFormModal = () => {
 
     return (
         <div>
-            <button onClick={() => modalRef.current.showModal()} className='btn btn-primary'><Plus className='mt-px' size={16} /> Add Product</button>
+            <button onClick={() => modalRef.current.showModal()} className='btn bg-[#f6f2e9] shadow-none border border-[#f3eee5] text-black'><Plus className='mt-px' size={16} /> Add Product</button>
             <dialog ref={modalRef} className="modal">
                 <div className="modal-box w-150 max-w-150">
                     <form method="dialog">

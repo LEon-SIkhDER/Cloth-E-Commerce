@@ -3,6 +3,10 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import QueryProvider from "@/Components/Provider/QueryProvider";
 import ThemeProvider from "@/Context/ThemeProvider";
+import "react-loading-skeleton/dist/skeleton.css";
+import { SkeletonTheme } from "react-loading-skeleton";
+import SkeletonThemeProvider from "@/Components/Provider/SkeletonThemeProvider";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,11 +49,14 @@ export default function RootLayout({ children }) {
       </head>
       <body className="min-h-full flex flex-col bg-[#f8f5ef] text-[#1f2520]">
         <Toaster></Toaster>
-        <ThemeProvider>
-          <QueryProvider>
-            {children}
-          </QueryProvider>
-        </ThemeProvider>
+        <SkeletonThemeProvider>
+          <ThemeProvider>
+            <QueryProvider>
+              {children}
+            </QueryProvider>
+          </ThemeProvider>
+        </SkeletonThemeProvider>
+
       </body>
     </html>
   );

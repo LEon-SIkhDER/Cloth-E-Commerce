@@ -4,8 +4,9 @@
 
 .active {
   background: rgba(31, 37, 32, 0.08);
-  border-left: 4px solid #1f2520;
+  border-left: 4px solid #d6a273;
   color: #1f2520;
+
 }
 
 :root {
